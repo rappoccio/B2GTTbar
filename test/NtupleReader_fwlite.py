@@ -300,7 +300,7 @@ argv = []
 import ROOT
 import sys
 from DataFormats.FWLite import Events, Handle
-ROOT.gROOT.Macro("rootlogon.C")
+#ROOT.gROOT.Macro("rootlogon.C")
 from leptonic_nu_z_component import solve_nu_tmass, solve_nu
 import copy
 from array import array
@@ -1074,6 +1074,7 @@ if options.writeTree  and options.selection == 2 :
 
     TreeAllHad = ROOT.TTree("TreeAllHad", "TreeAllHad")
 
+    SemiLeptTrig        = array('i', [0]  )
     Jet0CorrFactor      = array('f', [1.])
     Jet0CorrFactorUp    = array('f', [1.])
     Jet0CorrFactorDn    = array('f', [1.])
@@ -1239,14 +1240,14 @@ if options.writeTree  and options.selection == 2 :
     Q2weight_CorrDn     = array('f', [-1.])
     Q2weight_CorrUp     = array('f', [-1.])
 
-    CT10PDFweight_CorrDn     = array('f', [-1.])
-    CT10PDFweight_CorrUp     = array('f', [-1.])
+    NNPDF3weight_CorrDn     = array('f', [-1.])
+    NNPDF3weight_CorrUp     = array('f', [-1.])
     
     AllHadRunNum        = array('f', [-1.])   
     AllHadLumiBlock     = array('f', [-1.])   
     AllHadEventNum      = array('f', [-1.])   
 
-
+    TreeAllHad.Branch('SemiLeptTrig'        , SemiLeptTrig        ,  'SemiLeptTrig/I'        )
     TreeAllHad.Branch('Jet0CorrFactor'     , Jet0CorrFactor      , 'Jet0CorrFactor/F'      ) 
     TreeAllHad.Branch('Jet0CorrFactorUp'   , Jet0CorrFactorUp    , 'Jet0CorrFactorUp/F'    ) 
     TreeAllHad.Branch('Jet0CorrFactorDn'   , Jet0CorrFactorDn    , 'Jet0CorrFactorDn/F'    ) 
@@ -1410,8 +1411,8 @@ if options.writeTree  and options.selection == 2 :
     TreeAllHad.Branch('Q2weight_CorrDn'   ,  Q2weight_CorrDn       ,  'Q2weight_CorrDn/F'          )
     TreeAllHad.Branch('Q2weight_CorrUp'   ,  Q2weight_CorrUp       ,  'Q2weight_CorrUp/F'          )
 
-    TreeAllHad.Branch('CT10PDFweight_CorrDn'   ,  CT10PDFweight_CorrDn       ,  'CT10PDFweight_CorrDn/F'          )
-    TreeAllHad.Branch('CT10PDFweight_CorrUp'   ,  CT10PDFweight_CorrUp       ,  'CT10PDFweight_CorrUp/F'          )
+    TreeAllHad.Branch('NNPDF3weight_CorrDn'   ,  NNPDF3weight_CorrDn       ,  'NNPDF3weight_CorrDn/F'          )
+    TreeAllHad.Branch('NNPDF3weight_CorrUp'   ,  NNPDF3weight_CorrUp       ,  'NNPDF3weight_CorrUp/F'          )
 
     TreeAllHad.Branch('AllHadRunNum'         ,  AllHadRunNum       ,  'AllHadRunNum/F'          )
     TreeAllHad.Branch('AllHadLumiBlock'      ,  AllHadLumiBlock    ,  'AllHadLumiBlock/F'       )
@@ -1884,19 +1885,44 @@ for ifile in filesraw : #{ Loop over text file and find root files linked
         print 'Added ' + s
         #} End loop over txt file
 
+trigsToRun = []
 
-
-trigsToRun = [
-    "HLT_IsoMu24_eta2p1",
-    "HLT_Mu45_eta2p1",
-    "HLT_Mu50_",
-    "HLT_Mu40_eta2p1_PFJet200_PFJet50",
-    "HLT_IsoMu24_eta2p1",
-    "HLT_Ele32_eta2p1_WPLoose_Gsf",
-    "HLT_Ele45_CaloIdVT_GsfTrkIdT_PFJet200_PFJet50",
-    "HLT_Ele105_CaloIdVT_GsfTrkIdT",
-    "HLT_Ele115_CaloIdVT_GsfTrkIdT"
-    ]
+if options.selection == 1:
+      trigsToRun = [
+          "HLT_IsoMu24_eta2p1",
+          "HLT_Mu45_eta2p1",
+          "HLT_Mu50_",
+          "HLT_Mu40_eta2p1_PFJet200_PFJet50",
+          "HLT_IsoMu24_eta2p1",
+          "HLT_Ele32_eta2p1_WPLoose_Gsf",
+          "HLT_Ele45_CaloIdVT_GsfTrkIdT_PFJet200_PFJet50",
+          "HLT_Ele105_CaloIdVT_GsfTrkIdT",
+          "HLT_Ele115_CaloIdVT_GsfTrkIdT"
+          ]
+if options.selection == 2:
+    if options.isMC:
+        trigsToRun = [
+            "HLT_PFHT900"
+            ]
+    else :
+        trigsToRun = [
+            "HLT_PFHT200_v",
+            "HLT_PFHT250_v",
+            "HLT_PFHT300_v",
+            "HLT_PFHT350_v",
+            "HLT_PFHT400_v",
+            "HLT_PFHT475_v",
+            "HLT_PFHT600_v",
+            "HLT_PFHT650_v",
+            "HLT_PFHT800_v",
+            "HLT_PFJet140_v",
+            "HLT_PFJet200_v",
+            "HLT_PFJet260_v",
+            "HLT_PFJet320_v",
+            "HLT_PFJet400_v",
+            "HLT_PFJet450_v",
+            "HLT_PFJet500_v"
+            ]
 
 # loop over files
 for ifile in files : #{ Loop over root files
@@ -2205,47 +2231,49 @@ for ifile in files : #{ Loop over root files
                 print "Q^2 weight down: " + str(Q2wgt_down)
                 print ""
 
-            #CT10 PDF up and down
-            maxCT10PDFwgt_frac = 1
-            minCT10PDFwgt_frac = 1
+            #NNPDF3 PDF up and down
+            maxNNPDF3wgt_frac = 1
+            minNNPDF3wgt_frac = 1
+            PDFcentral = 1.0
                 
             if options.isZprime:
-                PDFstart = 392
-                PDFend = 445
+                PDFstart = 110
+                PDFend = 211
+                PDFcentral = lhe.weights()[PDFstart].wgt 
             else:
-                PDFstart = 109
-                PDFend = 162
+                PDFstart = 9
+                PDFend = 109
                 
             #Making sure central PDF isn't zero
-            if lhe.weights()[PDFstart].wgt == 0:
-                maxCT10PDFwgt_frac = 0
-                minCT10PDFwgt_frac = 0
+            if PDFcentral == 0:
+                maxNNPDF3wgt_frac = 0
+                minNNPDF3wgt_frac = 0
                 if options.verbose :
                     print "Unphysical: central PDF weight is zero!"
             else:
                 for i_lhePDF in range(PDFstart,PDFend):
-                    CT10PDFwgt = lhe.weights()[i_lhePDF].wgt
-                    CT10PDFwgt_frac = CT10PDFwgt/(lhe.weights()[PDFstart].wgt)
-                    maxCT10PDFwgt_frac = max(maxCT10PDFwgt_frac, CT10PDFwgt_frac)
-                    minCT10PDFwgt_frac = min(minCT10PDFwgt_frac, CT10PDFwgt_frac)
+                    NNPDF3wgt = lhe.weights()[i_lhePDF].wgt
+                    NNPDF3wgt_frac = NNPDF3wgt/(PDFcentral)
+                    maxNNPDF3wgt_frac = max(maxNNPDF3wgt_frac, NNPDF3wgt_frac)
+                    minNNPDF3wgt_frac = min(minNNPDF3wgt_frac, NNPDF3wgt_frac)
                     if options.verbose :
                         print str(i_lhePDF) + ".)"
-                        print "CT10 PDF LHE weight: " + str(CT10PDFwgt)
-                        CT10PDFwgt_norm = CT10PDFwgt/(lhe.originalXWGTUP())
-                        print "Normalized CT10 PDF wgt: " + str(CT10PDFwgt_norm)
-                        print "Fractional CT10 PDF wgt (compared to central value): " + str(CT10PDFwgt_frac)
+                        print "NNPDF3 PDF LHE weight: " + str(NNPDF3wgt)
+                        NNPDF3wgt_norm = NNPDF3wgt/(lhe.originalXWGTUP())
+                        print "Normalized NNPDF3 PDF wgt: " + str(NNPDF3wgt_norm)
+                        print "Fractional NNPDF3 PDF wgt (compared to central value): " + str(NNPDF3wgt_frac)
                 
-            CT10PDFwgt_up = maxCT10PDFwgt_frac
-            CT10PDFwgt_down = minCT10PDFwgt_frac
+            NNPDF3wgt_up = maxNNPDF3wgt_frac
+            NNPDF3wgt_down = minNNPDF3wgt_frac
             if options.verbose :
-                print "CT10 PDF weight up: " + str(CT10PDFwgt_up)
-                print "CT10 PDF weight down: " + str(CT10PDFwgt_down)
+                print "NNPDF3 PDF weight up: " + str(NNPDF3wgt_up)
+                print "NNPDF3 PDF weight down: " + str(NNPDF3wgt_down)
                 print ""
         else:
             Q2wgt_up = -999
             Q2wgt_down = -999
-            CT10PDFwgt_up = -999
-            CT10PDFwgt_down = -999
+            NNPDF3wgt_up = -999
+            NNPDF3wgt_down = -999
              
         
         h_NPVert.Fill( NPV, evWeight )
@@ -4874,8 +4902,8 @@ for ifile in files : #{ Loop over root files
                     Q2weight_CorrDn                [0] = Q2wgt_down
                     Q2weight_CorrUp                [0] = Q2wgt_up 
 
-                    CT10PDFweight_CorrDn           [0] = CT10PDFwgt_down
-                    CT10PDFweight_CorrUp           [0] = CT10PDFwgt_up   
+                    NNPDF3weight_CorrDn           [0] = NNPDF3wgt_down
+                    NNPDF3weight_CorrUp           [0] = NNPDF3wgt_up   
 
                     AllHadRunNum                   [0] = event.object().id().run()
                     AllHadLumiBlock                [0] = event.object().luminosityBlock()

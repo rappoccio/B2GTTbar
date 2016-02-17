@@ -2,7 +2,7 @@ from WMCore.Configuration import Configuration
 config = Configuration()
 
 config.section_("General")
-config.General.requestName = 'ZprimeAnaTrees_TT_TuneCUETP8M1_13TeV-powheg-pythia8_RunIISpring15MiniAODv2-74X_20160203'
+config.General.requestName = 'ZprimeAnaTrees_TT_TuneCUETP8M1_13TeV-powheg-pythia8_RunIISpring15MiniAODv2-74X'
 config.General.workArea = 'ZprimeAnaRunII'
 config.General.transferLogs = True
 
