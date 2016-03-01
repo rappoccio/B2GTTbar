@@ -14,7 +14,6 @@
 
 
 
-
 #@ CONFIGURATION
 
 from optparse import OptionParser
@@ -218,6 +217,11 @@ parser.add_option('--isttbar', action='store_true',
                   default=False,
                   dest='isttbar',
                   help='is it ttbar?')
+
+parser.add_option('--isRSG', action='store_true',
+		  default=False,
+		  dest='isRSG',
+		  help='is it RSG?')
 
 parser.add_option('--getGenInfo', action='store_true',
                   default=False,
@@ -496,7 +500,7 @@ l_metPhi = ("metNoHF" , "metNoHFPhi")
 # Generator info
 if options.isMC :
     h_generator = Handle("GenEventInfoProduct")
-    l_generator = ("generator" , "" )
+    l_generator = ("generator" , "", "SIM" )
     h_lhe = Handle("LHEEventProduct")
     l_lhe = ("externalLHEProducer", "")
     
@@ -1618,47 +1622,47 @@ ROOT.gSystem.Load('libCondFormatsJetMETObjects')
 
 if options.isMC : 
     print 'Getting L3 for AK4 MC'
-    L3JetParAK4  = ROOT.JetCorrectorParameters("JECs/Summer15_25nsV6_MC_L3Absolute_AK4PFchs.txt");
+    L3JetParAK4  = ROOT.JetCorrectorParameters("JECs/Summer15_25nsV7_MC_L3Absolute_AK4PFchs.txt");
     print 'Getting L2 for AK4 MC'
-    L2JetParAK4  = ROOT.JetCorrectorParameters("JECs/Summer15_25nsV6_MC_L2Relative_AK4PFchs.txt");
+    L2JetParAK4  = ROOT.JetCorrectorParameters("JECs/Summer15_25nsV7_MC_L2Relative_AK4PFchs.txt");
     print 'Getting L1 for AK4 MC'
-    L1JetParAK4  = ROOT.JetCorrectorParameters("JECs/Summer15_25nsV6_MC_L1FastJet_AK4PFchs.txt");
+    L1JetParAK4  = ROOT.JetCorrectorParameters("JECs/Summer15_25nsV7_MC_L1FastJet_AK4PFchs.txt");
     print 'Getting Uncertainty for AK4 MC'
-    UncertJetAK4  = ROOT.JetCorrectionUncertainty("JECs/Summer15_25nsV6_MC_Uncertainty_AK4PFchs.txt");
+    UncertJetAK4  = ROOT.JetCorrectionUncertainty("JECs/Summer15_25nsV7_MC_Uncertainty_AK4PFchs.txt");
 
 
     print 'Getting L3 for AK8 MC'
-    L3JetParAK8  = ROOT.JetCorrectorParameters("JECs/Summer15_25nsV6_MC_L3Absolute_AK8PFchs.txt");
+    L3JetParAK8  = ROOT.JetCorrectorParameters("JECs/Summer15_25nsV7_MC_L3Absolute_AK8PFchs.txt");
     print 'Getting L2 for AK8 MC'
-    L2JetParAK8  = ROOT.JetCorrectorParameters("JECs/Summer15_25nsV6_MC_L2Relative_AK8PFchs.txt");
+    L2JetParAK8  = ROOT.JetCorrectorParameters("JECs/Summer15_25nsV7_MC_L2Relative_AK8PFchs.txt");
     print 'Getting L1 for AK8 MC'
-    L1JetParAK8  = ROOT.JetCorrectorParameters("JECs/Summer15_25nsV6_MC_L1FastJet_AK8PFchs.txt");
+    L1JetParAK8  = ROOT.JetCorrectorParameters("JECs/Summer15_25nsV7_MC_L1FastJet_AK8PFchs.txt");
     print 'Getting Uncertainty for AK8 MC'
-    UncertJetAK8  = ROOT.JetCorrectionUncertainty("JECs/Summer15_25nsV6_MC_Uncertainty_AK8PFchs.txt");
+    UncertJetAK8  = ROOT.JetCorrectionUncertainty("JECs/Summer15_25nsV7_MC_Uncertainty_AK8PFchs.txt");
 else :
     print 'Getting L3 for AK4 DATA'
-    L3JetParAK4  = ROOT.JetCorrectorParameters("JECs/Summer15_25nsV6_DATA_L3Absolute_AK4PFchs.txt");
+    L3JetParAK4  = ROOT.JetCorrectorParameters("JECs/Summer15_25nsV7_DATA_L3Absolute_AK4PFchs.txt");
     print 'Getting L2 for AK4 DATA'
-    L2JetParAK4  = ROOT.JetCorrectorParameters("JECs/Summer15_25nsV6_DATA_L2Relative_AK4PFchs.txt");
+    L2JetParAK4  = ROOT.JetCorrectorParameters("JECs/Summer15_25nsV7_DATA_L2Relative_AK4PFchs.txt");
     print 'Getting L1 for AK4 DATA'
-    L1JetParAK4  = ROOT.JetCorrectorParameters("JECs/Summer15_25nsV6_DATA_L1FastJet_AK4PFchs.txt");
+    L1JetParAK4  = ROOT.JetCorrectorParameters("JECs/Summer15_25nsV7_DATA_L1FastJet_AK4PFchs.txt");
     # for data only :
     print 'Getting L2L3Residual for AK4 DATA'
-    ResJetParAK4 = ROOT.JetCorrectorParameters("JECs/Summer15_25nsV6_DATA_L2L3Residual_AK4PFchs.txt");
+    ResJetParAK4 = ROOT.JetCorrectorParameters("JECs/Summer15_25nsV7_DATA_L2L3Residual_AK4PFchs.txt");
     print 'Getting Uncertainty for AK4 DATA'
-    UncertJetAK4  = ROOT.JetCorrectionUncertainty("JECs/Summer15_25nsV6_DATA_Uncertainty_AK4PFchs.txt");
+    UncertJetAK4  = ROOT.JetCorrectionUncertainty("JECs/Summer15_25nsV7_DATA_Uncertainty_AK4PFchs.txt");
 
     print 'Getting L3 for AK8 DATA'
-    L3JetParAK8  = ROOT.JetCorrectorParameters("JECs/Summer15_25nsV6_DATA_L3Absolute_AK8PFchs.txt");
+    L3JetParAK8  = ROOT.JetCorrectorParameters("JECs/Summer15_25nsV7_DATA_L3Absolute_AK8PFchs.txt");
     print 'Getting L2 for AK8 DATA'
-    L2JetParAK8  = ROOT.JetCorrectorParameters("JECs/Summer15_25nsV6_DATA_L2Relative_AK8PFchs.txt");
+    L2JetParAK8  = ROOT.JetCorrectorParameters("JECs/Summer15_25nsV7_DATA_L2Relative_AK8PFchs.txt");
     print 'Getting L1 for AK8 DATA'
-    L1JetParAK8  = ROOT.JetCorrectorParameters("JECs/Summer15_25nsV6_DATA_L1FastJet_AK8PFchs.txt");
+    L1JetParAK8  = ROOT.JetCorrectorParameters("JECs/Summer15_25nsV7_DATA_L1FastJet_AK8PFchs.txt");
     # for data only :
     print 'Getting L2L3Residual for AK8 DATA'
-    ResJetParAK8 = ROOT.JetCorrectorParameters("JECs/Summer15_25nsV6_DATA_L2L3Residual_AK8PFchs.txt");
+    ResJetParAK8 = ROOT.JetCorrectorParameters("JECs/Summer15_25nsV7_DATA_L2L3Residual_AK8PFchs.txt");
     print 'Getting Uncertainty for AK8 DATA'
-    UncertJetAK8  = ROOT.JetCorrectionUncertainty("JECs/Summer15_25nsV6_DATA_Uncertainty_AK8PFchs.txt");
+    UncertJetAK8  = ROOT.JetCorrectionUncertainty("JECs/Summer15_25nsV7_DATA_Uncertainty_AK8PFchs.txt");
 
 
 # uncertSources = ["Absolute", "HighPtExtra",  "SinglePionECAL", "SinglePionHCAL",
@@ -2204,6 +2208,7 @@ for ifile in files : #{ Loop over root files
 
         if options.isZprime or options.isttbar:
             #@Event weight errors
+            #instructions: https://indico.cern.ch/event/460462/contribution/3/attachments/1184257/1717129/PPD_Review_for_B2G.pdf
             gotLHE = event.getByLabel( l_lhe, h_lhe )
             lhe = h_lhe.product()
            
@@ -2232,43 +2237,77 @@ for ifile in files : #{ Loop over root files
                 print ""
 
             #NNPDF3 PDF up and down
-            maxNNPDF3wgt_frac = 1
-            minNNPDF3wgt_frac = 1
+            NNPDF3wgtAvg = 0.0
+            NNPDF3wgtRMS = 0.0
             PDFcentral = 1.0
                 
             if options.isZprime:
-                PDFstart = 110
+                PDFstart = 111
                 PDFend = 211
-                PDFcentral = lhe.weights()[PDFstart].wgt 
+                PDFcentral = lhe.weights()[110].wgt 
             else:
                 PDFstart = 9
                 PDFend = 109
+
+            if options.verbose:
+                print "************************"
                 
             #Making sure central PDF isn't zero
             if PDFcentral == 0:
-                maxNNPDF3wgt_frac = 0
-                minNNPDF3wgt_frac = 0
                 if options.verbose :
                     print "Unphysical: central PDF weight is zero!"
             else:
                 for i_lhePDF in range(PDFstart,PDFend):
                     NNPDF3wgt = lhe.weights()[i_lhePDF].wgt
                     NNPDF3wgt_frac = NNPDF3wgt/(PDFcentral)
-                    maxNNPDF3wgt_frac = max(maxNNPDF3wgt_frac, NNPDF3wgt_frac)
-                    minNNPDF3wgt_frac = min(minNNPDF3wgt_frac, NNPDF3wgt_frac)
-                    if options.verbose :
-                        print str(i_lhePDF) + ".)"
-                        print "NNPDF3 PDF LHE weight: " + str(NNPDF3wgt)
-                        NNPDF3wgt_norm = NNPDF3wgt/(lhe.originalXWGTUP())
-                        print "Normalized NNPDF3 PDF wgt: " + str(NNPDF3wgt_norm)
-                        print "Fractional NNPDF3 PDF wgt (compared to central value): " + str(NNPDF3wgt_frac)
-                
-            NNPDF3wgt_up = maxNNPDF3wgt_frac
-            NNPDF3wgt_down = minNNPDF3wgt_frac
-            if options.verbose :
-                print "NNPDF3 PDF weight up: " + str(NNPDF3wgt_up)
-                print "NNPDF3 PDF weight down: " + str(NNPDF3wgt_down)
+                    NNPDF3wgtAvg += NNPDF3wgt_frac
+                    if options.verbose:
+                        print "-----"
+                        print i_lhePDF - PDFstart
+                        print "Fractional PDF weight: " + str(NNPDF3wgt_frac)
+                        print "-----"
+                        print ""
+                NNPDF3wgtAvg = NNPDF3wgtAvg/100
+                if options.verbose:
+                    print NNPDF3wgtAvg
+                for i_lhePDF in range(PDFstart,PDFend):
+                    NNPDF3wgt = lhe.weights()[i_lhePDF].wgt
+                    NNPDF3wgt_frac = NNPDF3wgt/(PDFcentral)
+                    NNPDF3wgtRMS += (NNPDF3wgt_frac - NNPDF3wgtAvg)*(NNPDF3wgt_frac - NNPDF3wgtAvg)
+ 
+            NNPDF3wgtRMS = sqrt(NNPDF3wgtRMS/99)
+            if options.verbose:
+                print NNPDF3wgtRMS
+            if PDFcentral == 0:
+                NNPDF3wgt_up = 0.
+                NNPDF3wgt_down = 0.
+            else:
+                NNPDF3wgt_up = 1.0 + NNPDF3wgtRMS
+                NNPDF3wgt_down = 1.0 - NNPDF3wgtRMS
+            if options.verbose:
+                print "NNPDF RMS: " + str(NNPDF3wgtRMS)
+                print "NNPDF UP: " + str(NNPDF3wgt_up)
+                print "NNPDF DOWN: " + str(NNPDF3wgt_down)
+                print "************************"
                 print ""
+        elif options.isRSG:
+
+            h_pdfWtUp = Handle("double")
+	    l_pdfWtUp = ("pdfweights", "pdfWtUp" , "PDFANA")
+            h_pdfWtDn = Handle("double")
+	    l_pdfWtDn = ("pdfweights", "pdfWtDn" , "PDFANA")
+
+
+	    event.getByLabel(l_pdfWtUp, h_pdfWtUp)
+	    event.getByLabel(l_pdfWtDn, h_pdfWtDn)
+            
+	    Q2wgt_up = -999
+            Q2wgt_down = -999
+            NNPDF3wgt_up = h_pdfWtUp.product()[0]
+            NNPDF3wgt_down = h_pdfWtDn.product()[0]
+
+
+
         else:
             Q2wgt_up = -999
             Q2wgt_down = -999
