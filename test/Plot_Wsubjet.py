@@ -31,7 +31,7 @@ def Plot_Wsubjet(argv) :
 
     import ROOT
 
-    fout= ROOT.TFile('Wmass_pt_binned_May26.root', "RECREATE")
+    fout= ROOT.TFile('Wmass_pt_binned_Jun1.root', "RECREATE")
 
 
     filesin = [ 'ttjets_ttree_76x_v1p2_puppi.root',
@@ -128,8 +128,8 @@ def Plot_Wsubjet(argv) :
     h_mWjet_b3_Datap  = ROOT.TH1F("h_mWjet_b3_Datap", ";m_{SD jet0} (GeV);Number", 300, 0, 300)
     h_mWjet_b4_Datap  = ROOT.TH1F("h_mWjet_b4_Datap", ";m_{SD jet0} (GeV);Number", 300, 0, 300)
 
-    h_ptWsubjet_Data_Type1 = ROOT.TH1F("h_ptWsubjet_Data_Type1", ";P_{T} SD subjet0 (GeV);Number", 1000, 0, 1000)
-    h_ptWsubjet_Data_Type2 = ROOT.TH1F("h_ptWsubjet_Data_Type2", ";P_{T} of leading AK8 jet (GeV);Number", 1000, 0, 1000)
+    h_ptWsubjet_Data_Type1 = ROOT.TH1F("h_ptWsubjet_Data_Type1", ";P_{T} SD subjet0 (GeV);Number", 100, 0, 1000)
+    h_ptWsubjet_Data_Type2 = ROOT.TH1F("h_ptWsubjet_Data_Type2", ";P_{T} of leading AK8 jet (GeV);Number", 100, 0, 1000)
 
     h_mWjet_EleData = ROOT.TH1F("h_mWjet_EleData", ";m_{SD jet0} (GeV);Number", 300, 0, 300)
     h_ptWjet_EleData = ROOT.TH1F("h_ptWjet_EleData", ";P_{T} SD jet0 (GeV);Number", 1300, 0, 1300)
@@ -450,7 +450,7 @@ def Plot_Wsubjet(argv) :
 
 
             passKin = FatJetSD_pt > 400. and W_pt > 0. 
-            passKin2 =  FatJetSD_pt > 200. and W_m < 1.
+            passKin2 =  FatJetSD_pt > 200. #and W_m < 1.
             passWPre = W_m > 50. and W_pt > 200. 
             passWPre2 = FatJetSD_m > 50. and FatJetSD_pt > 200. # and W_m >50.
             passTopTag = tau32 < 0.6 and mass_sd > 110. and mass_sd < 250.
@@ -481,14 +481,14 @@ def Plot_Wsubjet(argv) :
                 passMu +=1
 
 
-            #if (ifile != 0 and passKin and not passKin2) :
-            #    h_ptWsubjet_Data_Type1.Fill(W_pt, 1)
-            #if (ifile != 0 and passKin2 ) :
-            #    h_ptWsubjet_Data_Type2.Fill( FatJetSD_pt , 1)         
+            if ((ifile == 1 or ifile == 2) and passKin and not passKin2) :
+                h_ptWsubjet_Data_Type1.Fill(W_pt, 1)
+            if ((ifile == 1 or ifile == 2) and passKin2 ) :
+                h_ptWsubjet_Data_Type2.Fill( FatJetSD_pt , 1)         
             if  passTopTag and pass2DCut and passLepcut :# and passBtag   
                 if passKin and passWPre:
-                    if ( ifile == 1 or ifile == 2 ):
-                        h_ptWsubjet_Data_Type1.Fill(W_pt, 1)
+                    #if ( ifile == 1 or ifile == 2 ):
+                    #    h_ptWsubjet_Data_Type1.Fill(W_pt, 1)
                     passkin += 1
                     if (ifile == 0 or ifile == 3 ): #ttjets
                         nMCp +=1
@@ -605,8 +605,8 @@ def Plot_Wsubjet(argv) :
                                 h_mWsubjet_b4_Data.Fill(W_m , 1 )
        
                 if passKin2 and passWPre2:
-                    if (ifile == 1 or ifile == 2) :
-                        h_ptWsubjet_Data_Type2.Fill( FatJetSD_pt , 1) 
+                   # if (ifile == 1 or ifile == 2) :
+                   #     h_ptWsubjet_Data_Type2.Fill( FatJetSD_pt , 1) 
                     passkin2 += 1
                     if (ifile == 0 ): #ttjets
                         nMCp +=1
