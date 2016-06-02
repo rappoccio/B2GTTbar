@@ -37,14 +37,14 @@ import math
 ROOT.gStyle.SetTitleOffset(1.0, "Y")
 
 
-fout= ROOT.TFile('Wmass_meanrat_May26.root', "RECREATE")
+fout= ROOT.TFile('Wmass_meanrat_Jun1.root', "RECREATE")
 if options.pre :
-    fout= ROOT.TFile('Wmass_meanrat_pre_May26.root', "RECREATE")
+    fout= ROOT.TFile('Wmass_meanrat_pre_Jun1.root', "RECREATE")
 
 hmean = ROOT.TH1F("hmean", " ;p_{T} of SD subjet 0 (GeV); SF (data/MC)", 4, 0.0, 800.0)
 hwidth = ROOT.TH1F("hwidth", " ;p_{T} of SD subjet 0 (GeV); #frac{#sigma_{data}}{#sigma_{MC}} ", 4, 0.0, 800.0)
 
-filein = ROOT.TFile.Open('Wmass_pt_binned_May25.root')
+filein = ROOT.TFile.Open('Wmass_pt_binned_Jun1.root')
 lumi = 2136.0
 
 httbar = filein.Get("h_mWsubjet_ttjets")
@@ -336,8 +336,8 @@ if not options.pre :
     d = ROOT.TCanvas('sf','sf')
     hscale.Draw('P')
 
-    hscale.SetMaximum(1.15)
-    hscale.SetMinimum(0.99)
+    hscale.SetMaximum(1.5)
+    hscale.SetMinimum(1.3)
 
     hscale.SetMarkerStyle(20)
     #hscale.GetYaxis().SetRange(0.8,1.0)
