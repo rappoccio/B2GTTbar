@@ -50,6 +50,9 @@ lumi = 2136.0
 httbar = filein.Get("h_mWsubjet_ttjets")
 ttbar_pt = filein.Get("h_ptWsubjet_ttjets")
 
+httbar2 = filein.Get("h_mWjet_ttjets")
+ttbar_pt2 = filein.Get("h_ptWjet_ttjets")
+
 # Mass of SD subjet 0 of the AK8 jet in semi-leptonic Z' selection, binned in pt. 0-200 GeV, 200-400 GeV, 400-600 Gev, 600-Infinity GeV
 httbar_b1 = filein.Get("h_mWsubjet_b1_ttjets")
 httbar_b2 = filein.Get("h_mWsubjet_b2_ttjets")
@@ -194,9 +197,9 @@ for ipt, pt in enumerate(ptBs) :
 
 
     #fitting
-    fitter_data = ROOT.TF1("fitter_data", "gaus", 40, 120) #40, 130 )#50, 120)
+    fitter_data = ROOT.TF1("fitter_data", "gaus", 50, 120) #40, 130 )#50, 120)
     if options.pre :
-        fitter_data = ROOT.TF1("fitter_data", "gaus", 40, 120)# 40, 130 )
+        fitter_data = ROOT.TF1("fitter_data", "gaus", 50, 120)# 40, 130 )
     fitter_data.SetLineColor(1)
     fitter_data.SetLineWidth(2)
     fitter_data.SetLineStyle(2)
@@ -222,9 +225,9 @@ for ipt, pt in enumerate(ptBs) :
     #mchist.Add( hsingletop )
     #mchist.Add( httbarT )
 
-    fitter_mc = ROOT.TF1("fitter_mc", "gaus",  40, 120)#40, 130) #50, 120)
+    fitter_mc = ROOT.TF1("fitter_mc", "gaus",  50, 120)#40, 130) #50, 120)
     if options.pre :
-        fitter_mc = ROOT.TF1("fitter_mc", "gaus", 40, 120)# 40, 130)
+        fitter_mc = ROOT.TF1("fitter_mc", "gaus", 50, 120)# 40, 130)
     fitter_mc.SetLineColor(4)
     fitter_mc.SetLineWidth(2)
     fitter_mc.SetLineStyle(4)
@@ -315,8 +318,8 @@ for ipt, pt in enumerate(ptBs) :
     yInfo7 = yInfo6-0.042
     yInfo8 = yInfo7-0.042
     yInfo9 = yInfo8-0.042
-    if not options.pre :
-        tlx.DrawLatex(xInfo, yInfo4+0.13,"#bf{40 < m_{SD subjet 0} (GeV) < 120}")
+    #if not options.pre :
+    #    tlx.DrawLatex(xInfo, yInfo4+0.13,"#bf{40 < m_{SD subjet 0} (GeV) < 120}")
 
     c.Update()
     c.Draw()
@@ -333,8 +336,8 @@ if not options.pre :
     d = ROOT.TCanvas('sf','sf')
     hscale.Draw('P')
 
-    hscale.SetMaximum(2)
-    hscale.SetMinimum(0)
+    hscale.SetMaximum(1.15)
+    hscale.SetMinimum(0.99)
 
     hscale.SetMarkerStyle(20)
     #hscale.GetYaxis().SetRange(0.8,1.0)
@@ -357,15 +360,15 @@ if not options.pre :
     yInfo7 = yInfo6-0.042
     yInfo8 = yInfo7-0.042
 
-    tlx.DrawLatex(xInfo, yInfo4+0.4,"#bf{65 < m_{SD subjet 0} (GeV) < 130}")
+    #tlx.DrawLatex(xInfo, yInfo4+0.4,"#bf{65 < m_{SD subjet 0} (GeV) < 130}")
 
-    tlx.DrawLatex(xInfo, yInfo2, "#bf{anti-k_{T} R= 0.8, p_{T} > 400 (GeV)}")
-    tlx.DrawLatex(xInfo, yInfo3, "#bf{110 < m_{SD AK8 Jet}(GeV) < 250 , #tau_3 / #tau_2 < 0.6}")
-    tlx.DrawLatex(xInfo, yInfo4,"#bf{m_{SD subjet 0} > 50, p_{T of SD subjet 0} > 200 (GeV)}")
-    tlx.DrawLatex(xInfo, yInfo5, "#bf{AK4 CSVv2 B disc. > 0.7}") 
-    tlx.DrawLatex(xInfo, yInfo6, "#bf{2D cut}") 
-    tlx.DrawLatex(xInfo, yInfo7, "#bf{e :p_{T} > 110 and p_{T of MET} > 120 (GeV)}") 
-    tlx.DrawLatex(xInfo, yInfo8, "#bf{#mu :p_{T} > 55 and (p_{T} + P_{T of MET} ) > 150 (GeV)}")
+    #tlx.DrawLatex(xInfo, yInfo2, "#bf{anti-k_{T} R= 0.8, p_{T} > 400 (GeV)}")
+    #tlx.DrawLatex(xInfo, yInfo3, "#bf{110 < m_{SD AK8 Jet}(GeV) < 250 , #tau_3 / #tau_2 < 0.6}")
+    #tlx.DrawLatex(xInfo, yInfo4,"#bf{m_{SD subjet 0} > 50, p_{T of SD subjet 0} > 200 (GeV)}")
+    #tlx.DrawLatex(xInfo, yInfo5, "#bf{AK4 CSVv2 B disc. > 0.7}") 
+    #tlx.DrawLatex(xInfo, yInfo6, "#bf{2D cut}") 
+    #tlx.DrawLatex(xInfo, yInfo7, "#bf{e :p_{T} > 110 and p_{T of MET} > 120 (GeV)}") 
+    #tlx.DrawLatex(xInfo, yInfo8, "#bf{#mu :p_{T} > 55 and (p_{T} + P_{T of MET} ) > 150 (GeV)}")
     d.Update()
     d.Draw()
     d.Print('WsubjetSF/ScaleFactor_Wsubjet_AllBins_' + options.filestr + '.png', 'png' )
@@ -375,8 +378,8 @@ if not options.pre :
 
     hwidth.SetMarkerStyle(20)
     #hwidth.GetYaxis().SetRange(0.8,1.0)
-    hwidth.SetMaximum(3)
-    hwidth.SetMinimum(0)
+    hwidth.SetMaximum(1.5)
+    hwidth.SetMinimum(0.5)
 
     tlx = ROOT.TLatex()
     tlx.SetNDC()
@@ -396,15 +399,15 @@ if not options.pre :
     yInfo7 = yInfo6-0.042
     yInfo8 = yInfo7-0.042
 
-    tlx.DrawLatex(xInfo, yInfo4+0.4,"#bf{65 < m_{SD subjet 0} (GeV) < 130}")
+    #tlx.DrawLatex(xInfo, yInfo4+0.4,"#bf{65 < m_{SD subjet 0} (GeV) < 130}")
 
-    tlx.DrawLatex(xInfo, yInfo2, "#bf{anti-k_{T} R= 0.8, p_{T} > 400 (GeV)}")
-    tlx.DrawLatex(xInfo, yInfo3, "#bf{110 < m_{SD AK8 Jet}(GeV) < 250 , #tau_3 / #tau_2 < 0.6}")
-    tlx.DrawLatex(xInfo, yInfo4,"#bf{m_{SD subjet 0} > 50, p_{T of SD subjet 0} > 200 (GeV)}")
-    tlx.DrawLatex(xInfo, yInfo5, "#bf{AK4 CSVv2 B disc. > 0.7}") 
-    tlx.DrawLatex(xInfo, yInfo6, "#bf{2D cut}") 
-    tlx.DrawLatex(xInfo, yInfo7, "#bf{e :p_{T} > 110 and p_{T of MET} > 120 (GeV)}") 
-    tlx.DrawLatex(xInfo, yInfo8, "#bf{#mu :p_{T} > 55 and (p_{T} + P_{T of MET} ) > 150 (GeV)}")
+    #tlx.DrawLatex(xInfo, yInfo2, "#bf{anti-k_{T} R= 0.8, p_{T} > 400 (GeV)}")
+    #tlx.DrawLatex(xInfo, yInfo3, "#bf{110 < m_{SD AK8 Jet}(GeV) < 250 , #tau_3 / #tau_2 < 0.6}")
+    #tlx.DrawLatex(xInfo, yInfo4,"#bf{m_{SD subjet 0} > 50, p_{T of SD subjet 0} > 200 (GeV)}")
+    #tlx.DrawLatex(xInfo, yInfo5, "#bf{AK4 CSVv2 B disc. > 0.7}") 
+    #tlx.DrawLatex(xInfo, yInfo6, "#bf{2D cut}") 
+    #tlx.DrawLatex(xInfo, yInfo7, "#bf{e :p_{T} > 110 and p_{T of MET} > 120 (GeV)}") 
+    #tlx.DrawLatex(xInfo, yInfo8, "#bf{#mu :p_{T} > 55 and (p_{T} + P_{T of MET} ) > 150 (GeV)}")
 
     ee.Update()
     ee.Draw()
@@ -439,16 +442,17 @@ if not options.pre :
     yInfo7 = yInfo6-0.042
     yInfo8 = yInfo7-0.042
     
-    leg = ROOT.TLegend( 0.48, 0.68, 0.599, 0.875)
-    leg.SetFillColor(0)
-    leg.SetBorderSize(0)
+    legy = ROOT.TLegend( 0.48, 0.68, 0.599, 0.875)
+    legy.SetFillColor(0)
+    legy.SetBorderSize(0)
 
-    leg.AddEntry( hpts, 'Type 1', 'l')
-    leg.AddEntry( hpts2, 'Type 2', 'l')
+    legy.AddEntry( hpts, 'Type 1', 'l')
+    legy.AddEntry( hpts2, 'Type 2', 'l')
+    legy.Draw()
 #    tlx.DrawLatex(xInfo, yInfo4+0.4,"#bf{65 < m_{SD subjet 0} (GeV) < 130}")
 
-    tlx.DrawLatex(xInfo, yInfo2, "#bf{Type 1 : 1 anti-k_{T} R= 0.8 Jet, p_{T} > 400 (GeV)}")
-    tlx.DrawLatex(xInfo, yInfo3, "#bf{Type 2 : 2 anti-k_{T} R= 0.8 Jets, p_{T} > 200 (GeV)}")
+    #tlx.DrawLatex(xInfo, yInfo2, "#bf{Type 1 : 1 anti-k_{T} R= 0.8 Jet, p_{T} > 400 (GeV)}")
+    #tlx.DrawLatex(xInfo, yInfo3, "#bf{Type 2 : 2 anti-k_{T} R= 0.8 Jets, p_{T} > 200 (GeV)}")
 #    tlx.DrawLatex(xInfo, yInfo3, "#bf{110 < m_{SD AK8 Jet}(GeV) < 250 , #tau_3 / #tau_2 < 0.6}")
 #    tlx.DrawLatex(xInfo, yInfo4,"#bf{m_{SD subjet 0} > 50, p_{T of SD subjet 0} > 200 (GeV)}")
 #    tlx.DrawLatex(xInfo, yInfo5, "#bf{AK4 CSVv2 B disc. > 0.7}") 
@@ -467,4 +471,3 @@ if not options.pre :
 fout.cd()
 fout.Write()
 fout.Close()
-
