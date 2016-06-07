@@ -41,7 +41,8 @@ fout= ROOT.TFile('Wmass_meanrat_Jun1.root', "RECREATE")
 if options.pre :
     fout= ROOT.TFile('Wmass_meanrat_pre_Jun1.root', "RECREATE")
 
-hmean = ROOT.TH1F("hmean", " ;p_{T} of SD subjet 0 (GeV); SF (data/MC)", 4, 0.0, 800.0)
+#hmean = ROOT.TH1F("hmean", " ;p_{T} of SD subjet 0 (GeV); SF (data/MC)", 4, 0.0, 800.0)
+hpeak = ROOT.TH1F("hpeak", " ;p_{T} of SD subjet 0 (GeV); #frac{Mean Mass_{data}}{Mean Mass_{MC}}", 4, 0.0, 800.0)
 hwidth = ROOT.TH1F("hwidth", " ;p_{T} of SD subjet 0 (GeV); #frac{#sigma_{data}}{#sigma_{MC}} ", 4, 0.0, 800.0)
 
 filein = ROOT.TFile.Open('Wmass_pt_binned_Jun1.root')
@@ -260,10 +261,10 @@ for ipt, pt in enumerate(ptBs) :
     print 'data_over_mc peak :  '+str(meanrat)
     print '...........................................................'
 
-    ibin = hmean.GetXaxis().FindBin(pt)
-    hmean.SetBinContent(ibin, meanrat )
+    ibin = hpeak.GetXaxis().FindBin(pt)
+    hpeak.SetBinContent(ibin, meanrat ) 
     hwidth.SetBinContent(ibin, jms )
-    hmean.SetBinError(ibin, meanrat_uncert)   
+    hpeak.SetBinError(ibin, meanrat_uncert)   
     hwidth.SetBinError(ibin, jms_uncert)
     #drawing
 
@@ -325,7 +326,7 @@ for ipt, pt in enumerate(ptBs) :
     c.Draw()
     sele = options.filestr
     if options.pre :
-        sele == 'preTopTag'
+        sele == 'preWTag'
     c.Print('WsubjetSF/wMass_Bin'+ str(ipt) + '_' + sele + '.png', 'png' )
 #    c.Print('WsubjetSF/wMass_Bin'+ str(ipt) + '_' + sele + '.pdf', 'pdf' )
 
@@ -337,7 +338,7 @@ if not options.pre :
     hscale.Draw('P')
 
     hscale.SetMaximum(1.5)
-    hscale.SetMinimum(1.3)
+    hscale.SetMinimum(0.7)
 
     hscale.SetMarkerStyle(20)
     #hscale.GetYaxis().SetRange(0.8,1.0)
@@ -419,6 +420,10 @@ if not options.pre :
     hpts2.Draw('same')
     hpts.SetLineColor(ROOT.kBlue)
     hpts2.SetLineColor(ROOT.kCyan)
+    hpts2.SetMaximum(5400.)
+    hpts2.SetMinimum(0.0)
+    hpts.SetMaximum(5400.)
+    hpts.SetMinimum(0.0)
     #hpts.SetMarkerStyle(20)
     #hwidth.GetYaxis().SetRange(0.8,1.0)
     #hpts.SetMaximum(3)
@@ -465,6 +470,45 @@ if not options.pre :
     ff.Print('WsubjetSF/Pt_type1and2_' + options.filestr + '.png', 'png' )
 
 
+    gg = ROOT.TCanvas('peak','peak')
+    hpeak.Draw('e')
+
+    hpeak.SetMarkerStyle(20)
+    #hpeak.GetYaxis().SetRange(0.8,1.0)
+    hpeak.SetMaximum(1.5)
+    hpeak.SetMinimum(0.5)
+
+    tlx = ROOT.TLatex()
+    tlx.SetNDC()
+    tlx.SetTextFont(42)
+    tlx.SetTextSize(0.057)
+    tlx.DrawLatex(0.131, 0.91, "CMS Preliminary #sqrt{s}=13 TeV, " + str(lumi/1000.0) + " fb^{-1}")
+    # tlx.DrawLatex(0.77, 0.86, "#bf{CMS}")
+    # tlx.DrawLatex(0.72, 0.83, "#it{very preliminary}")
+    tlx.SetTextSize(0.029)
+    xInfo = 0.51
+    yInfoTop = 0.475
+    yInfo2 = yInfoTop-0.042
+    yInfo3 = yInfo2-0.042
+    yInfo4 = yInfo3-0.042
+    yInfo5 = yInfo4-0.042
+    yInfo6 = yInfo5-0.042
+    yInfo7 = yInfo6-0.042
+    yInfo8 = yInfo7-0.042
+
+    #tlx.DrawLatex(xInfo, yInfo4+0.4,"#bf{65 < m_{SD subjet 0} (GeV) < 130}")
+
+    #tlx.DrawLatex(xInfo, yInfo2, "#bf{anti-k_{T} R= 0.8, p_{T} > 400 (GeV)}")
+    #tlx.DrawLatex(xInfo, yInfo3, "#bf{110 < m_{SD AK8 Jet}(GeV) < 250 , #tau_3 / #tau_2 < 0.6}")
+    #tlx.DrawLatex(xInfo, yInfo4,"#bf{m_{SD subjet 0} > 50, p_{T of SD subjet 0} > 200 (GeV)}")
+    #tlx.DrawLatex(xInfo, yInfo5, "#bf{AK4 CSVv2 B disc. > 0.7}") 
+    #tlx.DrawLatex(xInfo, yInfo6, "#bf{2D cut}") 
+    #tlx.DrawLatex(xInfo, yInfo7, "#bf{e :p_{T} > 110 and p_{T of MET} > 120 (GeV)}") 
+    #tlx.DrawLatex(xInfo, yInfo8, "#bf{#mu :p_{T} > 55 and (p_{T} + P_{T of MET} ) > 150 (GeV)}")
+
+    gg.Update()
+    gg.Draw()
+    gg.Print('WsubjetSF/MeanRat_Wsubjet_AllBins' + '_' + options.filestr + '.png', 'png' )
 
 
 
