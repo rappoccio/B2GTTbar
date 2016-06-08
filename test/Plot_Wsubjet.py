@@ -144,8 +144,11 @@ def Plot_Wsubjet(argv) :
     h_mWjet_b3_MuData  = ROOT.TH1F("h_mWjet_b3_MuData", ";m_{SD jet0} (GeV);  ", 300, 0, 300)
     h_mWjet_b4_MuData  = ROOT.TH1F("h_mWjet_b4_MuData", ";m_{SD jet0} (GeV);  ", 300, 0, 300)
 
+    ptBs = array.array('d', [0., 200., 300., 400., 500., 800.])
+    nptBs = len(ptBs) - 1
+    hSF = ROOT.TH1F("hSF", " ;p_{T} of SD subjet 0 (GeV); SF (data/MC)", nptBs, ptBs)
 
-    hSF = ROOT.TH1F("hSF", " ;p_{T} of SD subjet 0 (GeV); SF (data/MC)", 4, 0.0, 700.0)
+
 
     nMC = 0
     nMCp = 0
@@ -855,7 +858,11 @@ def Plot_Wsubjet(argv) :
                                 nData4 +=1
                                 h_mWjet_b4_Data.Fill(FatJetSD_m , 1 )     
 
-    ptBs = [200.0, 300.0, 400.0, 500.0]
+    #ptBs = [200.0, 300.0, 400.0, 500.0]
+
+    #h = ROOT.TH1F("jms", "jms", nptBs, ptBs )
+
+
 #   SF =  ( nData / nDatap ) / ( nMC / nMCp )
     nDBs = [float(nData1), float(nData2), float(nData3), float(nData4)]
     nDpBs = [float(nDatap1), float(nDatap2), float(nDatap3), float(nDatap4)]
