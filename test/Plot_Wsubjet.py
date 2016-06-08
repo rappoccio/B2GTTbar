@@ -31,7 +31,7 @@ def Plot_Wsubjet(argv) :
 
     import ROOT
 
-    fout= ROOT.TFile('Wmass_pt_binned_Jun1.root', "RECREATE")
+    fout= ROOT.TFile('Wmass_pt_binned.root', "RECREATE")
 
 
     filesin = [ 'ttjets_ttree_76x_v1p2_puppi.root',
@@ -122,8 +122,11 @@ def Plot_Wsubjet(argv) :
     h_mWjet_b3_Datap  = ROOT.TH1F("h_mWjet_b3_Datap", ";m_{SD jet0} (GeV);  ", 300, 0, 300)
     h_mWjet_b4_Datap  = ROOT.TH1F("h_mWjet_b4_Datap", ";m_{SD jet0} (GeV);  ", 300, 0, 300)
 
-    h_ptWsubjet_Data_Type1 = ROOT.TH1F("h_ptWsubjet_Data_Type1", ";Jet P_{T} (GeV); ", 150, 0, 900) # SD subjet0 
-    h_ptWsubjet_Data_Type2 = ROOT.TH1F("h_ptWsubjet_Data_Type2", ";Jet P_{T} (GeV); ", 150, 0, 900)#of leading AK8 jet
+    h_ptWsubjet_Data_Type1 = ROOT.TH1F("h_ptWsubjet_Data_Type1", ";Jet P_{T} (GeV); ", 150, 0, 1500) # SD subjet0 
+    h_ptWsubjet_Data_Type2 = ROOT.TH1F("h_ptWsubjet_Data_Type2", ";Jet P_{T} (GeV); ", 150, 0, 1500)#of leading AK8 jet
+
+    h_ptWsubjet_MC_Type1 = ROOT.TH1F("h_ptWsubjet_MC_Type1", ";Jet P_{T} (GeV); ", 150, 0, 1500) # SD subjet0 
+    h_ptWsubjet_MC_Type2 = ROOT.TH1F("h_ptWsubjet_MC_Type2", ";Jet P_{T} (GeV); ", 150, 0, 1500)#of leading AK8 jet
 
     h_mWjet_EleData = ROOT.TH1F("h_mWjet_EleData", ";m_{SD jet0} (GeV);  ", 300, 0, 300)
     h_ptWjet_EleData = ROOT.TH1F("h_ptWjet_EleData", ";P_{T} SD jet0 (GeV);  ", 1300, 0, 1300)
@@ -142,7 +145,7 @@ def Plot_Wsubjet(argv) :
     h_mWjet_b4_MuData  = ROOT.TH1F("h_mWjet_b4_MuData", ";m_{SD jet0} (GeV);  ", 300, 0, 300)
 
 
-    hSF = ROOT.TH1F("hSF", " ;p_{T} of SD subjet 0 (GeV); SF (data/MC)", 4, 0.0, 800.0)
+    hSF = ROOT.TH1F("hSF", " ;p_{T} of SD subjet 0 (GeV); SF (data/MC)", 4, 0.0, 700.0)
 
     nMC = 0
     nMCp = 0
@@ -287,6 +290,11 @@ def Plot_Wsubjet(argv) :
         BJetEta             = array.array('f', [-1.])
         BJetPhi             = array.array('f', [-1.])
         BJetMass            = array.array('f', [-1.])
+        BJetbDisc2           = array.array('f', [-1.])
+        BJetPt2              = array.array('f', [-1.])
+        BJetEta2             = array.array('f', [-1.])
+        BJetPhi2             = array.array('f', [-1.])
+        BJetMass2            = array.array('f', [-1.])
         Type2PairMass       = array.array('f', [-1.])
         Type2PairPt         = array.array('f', [-1.])
         LeptonType          = array.array('i', [-1])
@@ -319,7 +327,8 @@ def Plot_Wsubjet(argv) :
         NearestAK4JetMass2   = array.array('f', [-1.])
         SemiLeptRunNum      = array.array('f', [-1.])  
         SemiLeptLumiBlock   = array.array('f', [-1.])  
-        SemiLeptEventNum    = array.array('f', [-1.])  
+        SemiLeptEventNum    = array.array('f', [-1.])
+        SemiLeptEventNum2    = array.array('f', [-1.])  
         PU_CorrDn           = array.array('f', [-1.])
         PU_CorrUp           = array.array('f', [-1.])
 
@@ -355,6 +364,16 @@ def Plot_Wsubjet(argv) :
         t.SetBranchAddress('FatJetSDsubjet1tau1' , FatJetSDsubjetWtau1 )
         t.SetBranchAddress('FatJetSDsubjet1tau2' , FatJetSDsubjetWtau2 )
         t.SetBranchAddress('FatJetSDsubjet1tau3' , FatJetSDsubjetWtau3 )
+        t.SetBranchAddress('BJetbDisc' , BJetbDisc )
+        t.SetBranchAddress('BJetPt' , BJetPt )
+        t.SetBranchAddress('BJetEta' , BJetEta )
+        t.SetBranchAddress('BJetPhi' , BJetPhi )
+        t.SetBranchAddress('BJetMass' , BJetMass )
+        t2.SetBranchAddress('BJetbDisc' , BJetbDisc2 )
+        t2.SetBranchAddress('BJetPt' , BJetPt2 )
+        t2.SetBranchAddress('BJetEta' , BJetEta2 )
+        t2.SetBranchAddress('BJetPhi' , BJetPhi2 )
+        t2.SetBranchAddress('BJetMass' , BJetMass2 )
         t.SetBranchAddress('LeptonType'          , LeptonType          )
         t.SetBranchAddress('LeptonPt'            , LeptonPt            )
         t.SetBranchAddress('LeptonEta'           , LeptonEta           )
@@ -380,6 +399,7 @@ def Plot_Wsubjet(argv) :
         t.SetBranchAddress('SemiLeptRunNum'         ,  SemiLeptRunNum       )
         t.SetBranchAddress('SemiLeptLumiBlock'      ,  SemiLeptLumiBlock    )
         t.SetBranchAddress('SemiLeptEventNum'       ,  SemiLeptEventNum     )
+        t2.SetBranchAddress('SemiLeptEventNum'       ,  SemiLeptEventNum2     )
         t.SetBranchAddress('PU_CorrDn'       ,  PU_CorrDn     )
         t.SetBranchAddress('PU_CorrUp'       ,  PU_CorrUp     )
  
@@ -394,6 +414,16 @@ def Plot_Wsubjet(argv) :
         t.SetBranchStatus ('FatJetTau32', 1)
         t.SetBranchStatus ('FatJetTau21', 1)
         t.SetBranchStatus ('FatJetRhoRatio', 1)
+        #t.SetBranchStatus('BJetbDisc' , 1 )
+        t.SetBranchStatus('BJetPt' , 1)
+        t.SetBranchStatus('BJetEta' , 1)
+        t.SetBranchStatus('BJetPhi' , 1 )
+        t.SetBranchStatus('BJetMass' , 1)
+        t2.SetBranchStatus('BJetbDisc' , 1 )
+        t2.SetBranchStatus('BJetPt' , 1)
+        t2.SetBranchStatus('BJetEta' , 1)
+        t2.SetBranchStatus('BJetPhi' , 1 )
+        t2.SetBranchStatus('BJetMass' , 1)
         t.SetBranchStatus('FatJetSDsubjetWpt',1)
         t.SetBranchStatus('FatJetSDsubjetWtau1',1)
         t.SetBranchStatus('FatJetSDsubjetWtau2',1)
@@ -433,6 +463,7 @@ def Plot_Wsubjet(argv) :
         t.SetBranchStatus ('SemiLeptRunNum'      , 1)
         t.SetBranchStatus ('SemiLeptLumiBlock'   , 1)
         t.SetBranchStatus ('SemiLeptEventNum'    , 1)
+        t2.SetBranchStatus ('SemiLeptEventNum'    , 1)
         t.SetBranchStatus ('PU_CorrDn'           , 1)
         t.SetBranchStatus ('PU_CorrUp'           , 1)
 
@@ -463,27 +494,44 @@ def Plot_Wsubjet(argv) :
            # if (jentry == 5 or jentry == 500  ) : print "Pt of leading AK8 jet for events 5 and 500 : " + str(FatJetPt[0])
             #hadTopCandP4 = ROOT.TLorentzVector()
             #hadTopCandP4.SetPtEtaPhiM( FatJetPt[0], FatJetEta[0], FatJetPhi[0], FatJetMass[0])
-            '''
+            
             bJetCandP4puppi0 = ROOT.TLorentzVector()
-            bJetCandP4puppi0.SetPtEtaPhiM( NearestAK4JetPt[0], NearestAK4JetEta[0], NearestAK4JetPhi[0], NearestAK4JetMass[0])
+            bJetCandP4puppi0.SetPtEtaPhiM( BJetPt[0], BJetEta[0], BJetPhi[0], BJetMass[0])
+            bJetCandP4puppiEventnum = SemiLeptEventNum[0]
+            bJetCandP4puppi0Bdisc = -1.0
+            #print "b jet PUPPI event number : " + str(bJetCandP4puppiEventnum)
 
+            '''
             bJetCandP4chs0 = ROOT.TLorentzVector()
-            bJetCandP4chs0.SetPtEtaPhiM( NearestAK4JetPt2[0], NearestAK4JetEta2[0], NearestAK4JetPhi2[0], NearestAK4JetMass2[0])
+            bJetCandP4chs0.SetPtEtaPhiM( BJetPt2[0], BJetEta2[0], BJetPhi2[0], BJetMass2[0])
+            bJetCandP4chsBdisc = [ BJetbDisc2[0] ]
+            bJetCandP4chs0Eventnum = SemiLeptEventNum2[0]
 
-            bJetCandP4chs1 = ROOT.TLorentzVector()
-            bJetCandP4chs1.SetPtEtaPhiM( NearestAK4JetPt2[1], NearestAK4JetEta2[1], NearestAK4JetPhi2[1], NearestAK4JetMass2[1])
+            if len(BJetPt2) == 2:
+                bJetCandP4chs1 = ROOT.TLorentzVector()
+                bJetCandP4chs1.SetPtEtaPhiM( BJetPt2[1], BJetEta2[1], BJetPhi2[1], BJetMass2[1])
+                bJetCandP4chsBdisc = [  BJetbDisc2[0], BJetbDisc2[1] ]
+                bJetCandP4chs1Eventnum = SemiLeptEventNum2[1]
 
-            bJetCandP4chs2 = ROOT.TLorentzVector()
-            bJetCandP4chs2.SetPtEtaPhiM( NearestAK4JetPt2[2], NearestAK4JetEta2[2], NearestAK4JetPhi2[2], NearestAK4JetMass2[2])
+            if len(BJetPt2) > 2:
+                bJetCandP4chs2 = ROOT.TLorentzVector()
+                bJetCandP4chs2.SetPtEtaPhiM( BJetPt2[2], BJetEta2[2], BJetPhi2[2], BJetMass2[2])
+                bJetCandP4chsBdisc = [  BJetbDisc2[0], BJetbDisc2[1], BJetbDisc2[2]  ]
+                bJetCandP4chs2Eventnum = SemiLeptEventNum2[2]
+
+            #print "b jet CHS event number : " + str(bJetCandP4chs0Eventnum)
+
             
             DrMin = 9999.0
-            dr = [ bJetCandP4puppi0.DeltaR(bJetCandP4chs0) , bJetCandP4puppi0.DeltaR(bJetCandP4chs1) , bJetCandP4puppi0.DeltaR(bJetCandP4chs2)] 
+            dr = [bJetCandP4puppi0.DeltaR(bJetCandP4chs0), bJetCandP4puppi0.DeltaR(bJetCandP4chs1), bJetCandP4puppi0.DeltaR(bJetCandP4chs2) ]
+            #fill the dr array 
             for i, s in dr :
                 if s < DrMin:
                     DrMin = s
+                    bJetCandP4puppi0Bdisc = 
                     bdisc = AK4bDisc[i]
             '''
-            bdisc = AK4bDisc[0]
+            bdisc = BJetbDisc2[0]
 
             nuCandP4 = ROOT.TLorentzVector( )
             nuCandP4.SetPtEtaPhiM( SemiLepMETpt[0], 0, SemiLepMETphi[0], SemiLepMETpt[0] )
@@ -538,7 +586,7 @@ def Plot_Wsubjet(argv) :
 
             passWPost = (50. < W_m < 130.) and W_tau21 < 0.7 #65 to 130 before
             passWPost2 = (50. < FatJetSD_m < 130.) and tau21 < 0.7
-            passEleMETcut =  LeptonType[0] == 1 and MET_pt > 120. and theLepton.Perp() > 110.
+            passEleMETcut =  LeptonType[0] == 1 and MET_pt > 120. and theLepton.Perp() > 55. #110.
             # B2G-15-002  uses ( theLepton.Perp() + MET_pt ) > 150. (was previously 250 here) 
             passMuHtLepcut = LeptonType[0] == 2 and ( theLepton.Perp() + MET_pt ) > 150. and theLepton.Perp() > 55.
             passLepcut = passEleMETcut or passMuHtLepcut 
@@ -560,13 +608,13 @@ def Plot_Wsubjet(argv) :
                 passMu +=1
 
 
-            if (ifile > 0 and passKin) :
-                h_ptWsubjet_Data_Type1.Fill(W_pt, 1)
+            #if (ifile > 0 and passKin) :
+                #h_ptWsubjet_Data_Type1.Fill(W_pt, 1)
                 #print "Pt of W tagged subjet of the AK8 jet for events 5 and 500 : " + str( W_pt)
-            if (ifile > 0 and passKin2 ) :
-                h_ptWsubjet_Data_Type2.Fill( FatJetSD_pt , 1)   
+            #if (ifile > 0 and passKin2 ) :
+                #h_ptWsubjet_Data_Type2.Fill( FatJetSD_pt , 1)   
                 #print "Pt of W tagged AK8 jet for events 5 and 500 : " + str( W_pt)      
-            if  passTopTag and pass2DCut and passLepcut and passBtag :  
+            if  passTopTag and pass2DCut and passLepcut: # and passBtag :  
                 if passKin and passWPre:
                     #if ( ifile == 1 or ifile == 2 ):
                     #    h_ptWsubjet_Data_Type1.Fill(W_pt, 1)
@@ -576,19 +624,19 @@ def Plot_Wsubjet(argv) :
                         h_mWsubjet_ttjetsp.Fill(W_m , 1 )
                         h_ptWsubjet_ttjetsp.Fill(W_pt , 1 )
 
-                        if ( W_pt > 0.0 and W_pt < 200.0 ) : 
+                        if ( W_pt > 200.0 and W_pt < 300.0 ) : 
                             nMCp1 +=1
                             h_mWsubjet_b1_ttjetsp.Fill(W_m , 1 )
 
-                        if ( W_pt > 200.0 and W_pt < 400.0 ) :
+                        if ( W_pt > 300.0 and W_pt < 400.0 ) :
                             nMCp2 +=1 
                             h_mWsubjet_b2_ttjetsp.Fill(W_m , 1 )
 
-                        if ( W_pt > 400.0 and W_pt < 600.0 ) : 
+                        if ( W_pt > 400.0 and W_pt < 500.0 ) : 
                             nMCp3 +=1
                             h_mWsubjet_b3_ttjetsp.Fill(W_m , 1 )
 
-                        if ( W_pt > 600.0 ) : 
+                        if ( W_pt > 500.0 ) : 
                             nMCp4 +=1
                             h_mWsubjet_b4_ttjetsp.Fill(W_m , 1 )
                     if (ifile != 0 ):
@@ -596,92 +644,94 @@ def Plot_Wsubjet(argv) :
                         h_mWsubjet_Datap.Fill(W_m , 1 )
                         h_ptWsubjet_Datap.Fill(W_pt , 1 )
 
-                        if ( W_pt > 0.0 and W_pt < 200.0 ) : 
+                        if ( W_pt > 200.0 and W_pt < 300.0 ) : 
                             nDatap1 +=1
                             h_mWsubjet_b1_Datap.Fill(W_m , 1 )
 
-                        if ( W_pt > 200.0 and W_pt < 400.0 ) : 
+                        if ( W_pt > 300.0 and W_pt < 400.0 ) : 
                             nDatap2 +=1
                             h_mWsubjet_b2_Datap.Fill(W_m , 1 )
 
-                        if ( W_pt > 400.0 and W_pt < 600.0 ) : 
+                        if ( W_pt > 400.0 and W_pt < 500.0 ) : 
                             nDatap3 +=1
                             h_mWsubjet_b3_Datap.Fill(W_m , 1 )
 
-                        if ( W_pt > 600.0 ) : 
+                        if ( W_pt > 500.0 ) : 
                             nDatap4 +=1
                             h_mWsubjet_b4_Datap.Fill(W_m , 1 )
                     if passWPost : #ttjets.root    
                         passOp += 1 
                         if (ifile == 0 ): #ttjets.root
                             nMC +=1
+                            h_ptWsubjet_MC_Type1.Fill(W_pt, 1)
                             h_mWsubjet_ttjets.Fill(W_m , 1 )
                             h_ptWsubjet_ttjets.Fill(W_pt , 1 )
 
-                            if ( W_pt > 0.0 and W_pt < 200.0 ) : 
+                            if ( W_pt > 200.0 and W_pt < 300.0 ) : 
                                 nMC1 +=1
                                 h_mWsubjet_b1_ttjets.Fill(W_m , 1 )
 
-                            if ( W_pt > 200.0 and W_pt < 400.0 ) : 
+                            if ( W_pt > 300.0 and W_pt < 400.0 ) : 
                                 nMC2 +=1
                                 h_mWsubjet_b2_ttjets.Fill(W_m , 1 )
 
-                            if ( W_pt > 400.0 and W_pt < 600.0 ) : 
+                            if ( W_pt > 400.0 and W_pt < 500.0 ) : 
                                 nMC3 +=1
                                 h_mWsubjet_b3_ttjets.Fill(W_m , 1 )
 
-                            if ( W_pt > 600.0 ) : 
+                            if ( W_pt > 500.0 ) : 
                                 nMC4 +=1
                                 h_mWsubjet_b4_ttjets.Fill(W_m , 1 )
                         if (ifile == 1  ):
                             h_mWsubjet_EleData.Fill(W_m , 1 )
                             h_ptWsubjet_EleData.Fill(W_pt , 1 )
 
-                            if ( W_pt > 0.0 and W_pt < 200.0 ) : 
+                            if ( W_pt > 200.0 and W_pt < 300.0 ) : 
                                 h_mWsubjet_b1_EleData.Fill(W_m , 1 )
 
-                            if ( W_pt > 200.0 and W_pt < 400.0 ) : 
+                            if ( W_pt > 300.0 and W_pt < 400.0 ) : 
                                 h_mWsubjet_b2_EleData.Fill(W_m , 1 )
 
-                            if ( W_pt > 400.0 and W_pt < 600.0 ) : 
+                            if ( W_pt > 400.0 and W_pt < 500.0 ) : 
                                 h_mWsubjet_b3_EleData.Fill(W_m , 1 )
 
-                            if ( W_pt > 600.0 ) : 
+                            if ( W_pt > 500.0 ) : 
                                 h_mWsubjet_b4_EleData.Fill(W_m , 1 )
 
                         if (ifile == 2 ):
                             h_mWsubjet_MuData.Fill(W_m , 1 )
                             h_ptWsubjet_MuData.Fill(W_pt , 1 )
 
-                            if ( W_pt > 0.0 and W_pt < 200.0 ) : 
+                            if ( W_pt > 200.0 and W_pt < 300.0 ) : 
                                 h_mWsubjet_b1_MuData.Fill(W_m , 1 )
 
-                            if ( W_pt > 200.0 and W_pt < 400.0 ) : 
+                            if ( W_pt > 300.0 and W_pt < 400.0 ) : 
                                 h_mWsubjet_b2_MuData.Fill(W_m , 1 )
 
-                            if ( W_pt > 400.0 and W_pt < 600.0 ) : 
+                            if ( W_pt > 400.0 and W_pt < 500.0 ) : 
                                 h_mWsubjet_b3_MuData.Fill(W_m , 1 )
 
-                            if ( W_pt > 600.0 ) : 
+                            if ( W_pt > 500.0 ) : 
                                 h_mWsubjet_b4_MuData.Fill(W_m , 1 )
                         if (ifile != 0 ):
                             nData +=1
+                            h_ptWsubjet_Data_Type1.Fill(W_pt, 1)
                             h_mWsubjet_Data.Fill(W_m , 1 )
                             h_ptWsubjet_Data.Fill(W_pt , 1 )
 
-                            if ( W_pt > 0.0 and W_pt < 200.0 ) : 
+                            if ( W_pt > 200.0 and W_pt < 300.0 ) : 
                                 nData1 +=1
                                 h_mWsubjet_b1_Data.Fill(W_m , 1 )
 
-                            if ( W_pt > 200.0 and W_pt < 400.0 ) : 
+                            if ( W_pt > 300.0 and W_pt < 400.0 ) : 
                                 nData2 +=1
                                 h_mWsubjet_b2_Data.Fill(W_m , 1 )
 
-                            if ( W_pt > 400.0 and W_pt < 600.0 ) : 
+                            if ( W_pt > 400.0 and W_pt < 500.0 ) : 
                                 nData3 +=1
                                 h_mWsubjet_b3_Data.Fill(W_m , 1 )
 
-                            if ( W_pt > 600.0 ) : 
+                            if ( W_pt > 500.0 ) : 
                                 nData4 +=1
                                 h_mWsubjet_b4_Data.Fill(W_m , 1 )
        
@@ -694,19 +744,19 @@ def Plot_Wsubjet(argv) :
                         h_mWjet_ttjetsp.Fill(FatJetSD_m , 1 )
                         h_ptWjet_ttjetsp.Fill(FatJetSD_pt , 1 )
 
-                        if ( FatJetSD_pt > 0.0 and FatJetSD_pt < 200.0 ) : 
+                        if ( FatJetSD_pt > 200.0 and FatJetSD_pt < 300.0 ) : 
                             nMCp1 +=1
                             h_mWjet_b1_ttjetsp.Fill(FatJetSD_m , 1 )
 
-                        if ( FatJetSD_pt > 200.0 and FatJetSD_pt < 400.0 ) :
+                        if ( FatJetSD_pt > 300.0 and FatJetSD_pt < 400.0 ) :
                             nMCp2 +=1 
                             h_mWjet_b2_ttjetsp.Fill(FatJetSD_m , 1 )
 
-                        if ( FatJetSD_pt > 400.0 and FatJetSD_pt < 600.0 ) : 
+                        if ( FatJetSD_pt > 400.0 and FatJetSD_pt < 500.0 ) : 
                             nMCp3 +=1
                             h_mWjet_b3_ttjetsp.Fill(FatJetSD_m , 1 )
 
-                        if ( FatJetSD_pt > 600.0 ) : 
+                        if ( FatJetSD_pt > 500.0 ) : 
                             nMCp4 +=1
                             h_mWjet_b4_ttjetsp.Fill(FatJetSD_m , 1 )
                     if (ifile != 0 ):
@@ -714,96 +764,98 @@ def Plot_Wsubjet(argv) :
                         h_mWjet_Datap.Fill(FatJetSD_m , 1 )
                         h_ptWjet_Datap.Fill(FatJetSD_pt , 1 )
 
-                        if ( FatJetSD_pt > 0.0 and FatJetSD_pt < 200.0 ) : 
+                        if ( FatJetSD_pt > 200.0 and FatJetSD_pt < 300.0 ) : 
                             nDatap1 +=1
                             h_mWjet_b1_Datap.Fill(FatJetSD_m , 1 )
 
-                        if ( FatJetSD_pt > 200.0 and FatJetSD_pt < 400.0 ) : 
+                        if ( FatJetSD_pt > 300.0 and FatJetSD_pt < 400.0 ) : 
                             nDatap2 +=1
                             h_mWjet_b2_Datap.Fill(FatJetSD_m , 1 )
 
-                        if ( FatJetSD_pt > 400.0 and FatJetSD_pt < 600.0 ) : 
+                        if ( FatJetSD_pt > 400.0 and FatJetSD_pt < 500.0 ) : 
                             nDatap3 +=1
                             h_mWjet_b3_Datap.Fill(FatJetSD_m , 1 )
 
-                        if ( FatJetSD_pt > 600.0 ) : 
+                        if ( FatJetSD_pt > 500.0 ) : 
                             nDatap4 +=1
                             h_mWjet_b4_Datap.Fill(FatJetSD_m , 1 )
                     if passWPost2 :   
                         passOp += 1 
                         if (ifile == 0 ): #ttjets.root
                             nMC +=1
+                            h_ptWsubjet_MC_Type2.Fill( FatJetSD_pt , 1)
                             h_mWjet_ttjets.Fill(FatJetSD_m , 1 )
                             h_ptWjet_ttjets.Fill(FatJetSD_pt , 1 )
 
-                            if ( FatJetSD_pt > 0.0 and FatJetSD_pt < 200.0 ) : 
+                            if ( FatJetSD_pt > 200.0 and FatJetSD_pt < 300.0 ) : 
                                 nMC1 +=1
                                 h_mWjet_b1_ttjets.Fill(FatJetSD_m , 1 )
 
-                            if ( FatJetSD_pt > 200.0 and FatJetSD_pt < 400.0 ) : 
+                            if ( FatJetSD_pt > 300.0 and FatJetSD_pt < 400.0 ) : 
                                 nMC2 +=1
                                 h_mWjet_b2_ttjets.Fill(FatJetSD_m , 1 )
 
-                            if ( FatJetSD_pt > 400.0 and FatJetSD_pt < 600.0 ) : 
+                            if ( FatJetSD_pt > 400.0 and FatJetSD_pt < 500.0 ) : 
                                 nMC3 +=1
                                 h_mWjet_b3_ttjets.Fill(FatJetSD_m , 1 )
 
-                            if ( FatJetSD_pt > 600.0 ) : 
+                            if ( FatJetSD_pt > 500.0 ) : 
                                 nMC4 +=1
                                 h_mWjet_b4_ttjets.Fill(FatJetSD_m , 1 )
                         if (ifile == 1 ):
                             h_mWjet_EleData.Fill(FatJetSD_m , 1 )
                             h_ptWjet_EleData.Fill(FatJetSD_pt , 1 )
 
-                            if ( FatJetSD_pt > 0.0 and FatJetSD_pt < 200.0 ) : 
+                            if ( FatJetSD_pt > 200.0 and FatJetSD_pt < 300.0 ) : 
                                 h_mWjet_b1_EleData.Fill(FatJetSD_m , 1 )
 
-                            if ( FatJetSD_pt > 200.0 and FatJetSD_pt < 400.0 ) : 
+                            if ( FatJetSD_pt > 300.0 and FatJetSD_pt < 400.0 ) : 
                                 h_mWjet_b2_EleData.Fill(FatJetSD_m , 1 )
 
-                            if ( FatJetSD_pt > 400.0 and FatJetSD_pt < 600.0 ) : 
+                            if ( FatJetSD_pt > 400.0 and FatJetSD_pt < 500.0 ) : 
                                 h_mWjet_b3_EleData.Fill(FatJetSD_m , 1 )
 
-                            if ( FatJetSD_pt > 600.0 ) : 
+                            if ( FatJetSD_pt > 500.0 ) : 
                                 h_mWjet_b4_EleData.Fill(FatJetSD_m , 1 )
 
                         if (ifile == 2):
                             h_mWjet_MuData.Fill(FatJetSD_m , 1 )
                             h_ptWjet_MuData.Fill(FatJetSD_pt , 1 )
 
-                            if ( FatJetSD_pt > 0.0 and FatJetSD_pt < 200.0 ) : 
+                            if ( FatJetSD_pt > 200.0 and FatJetSD_pt < 300.0 ) : 
                                 h_mWjet_b1_MuData.Fill(FatJetSD_m , 1 )
 
-                            if ( FatJetSD_pt > 200.0 and FatJetSD_pt < 400.0 ) : 
+                            if ( FatJetSD_pt > 300.0 and FatJetSD_pt < 400.0 ) : 
                                 h_mWjet_b2_MuData.Fill(FatJetSD_m , 1 )
 
-                            if ( FatJetSD_pt > 400.0 and FatJetSD_pt < 600.0 ) : 
+                            if ( FatJetSD_pt > 400.0 and FatJetSD_pt < 500.0 ) : 
                                 h_mWjet_b3_MuData.Fill(FatJetSD_m , 1 )
 
-                            if ( FatJetSD_pt > 600.0 ) : 
+                            if ( FatJetSD_pt > 500.0 ) : 
                                 h_mWjet_b4_MuData.Fill(FatJetSD_m , 1 )
                         if (ifile != 0 ):
                             nData +=1
+                            h_ptWsubjet_Data_Type2.Fill( FatJetSD_pt , 1)
                             h_mWjet_Data.Fill(FatJetSD_m , 1 )
                             h_ptWjet_Data.Fill(FatJetSD_pt , 1 )
 
-                            if ( FatJetSD_pt > 0.0 and FatJetSD_pt < 200.0 ) : 
+                            if ( FatJetSD_pt > 200.0 and FatJetSD_pt < 300.0 ) : 
                                 nData1 +=1
                                 h_mWjet_b1_Data.Fill(FatJetSD_m , 1 )
 
-                            if ( FatJetSD_pt > 200.0 and FatJetSD_pt < 400.0 ) : 
+                            if ( FatJetSD_pt > 300.0 and FatJetSD_pt < 400.0 ) : 
                                 nData2 +=1
                                 h_mWjet_b2_Data.Fill(FatJetSD_m , 1 )
 
-                            if ( FatJetSD_pt > 400.0 and FatJetSD_pt < 600.0 ) : 
+                            if ( FatJetSD_pt > 400.0 and FatJetSD_pt < 500.0 ) : 
                                 nData3 +=1
                                 h_mWjet_b3_Data.Fill(FatJetSD_m , 1 )
 
-                            if ( FatJetSD_pt > 600.0 ) : 
+                            if ( FatJetSD_pt > 500.0 ) : 
                                 nData4 +=1
                                 h_mWjet_b4_Data.Fill(FatJetSD_m , 1 )     
 
-    ptBs = [0.0, 200.0, 400.0, 600.0]
+    ptBs = [200.0, 300.0, 400.0, 500.0]
 #   SF =  ( nData / nDatap ) / ( nMC / nMCp )
     nDBs = [float(nData1), float(nData2), float(nData3), float(nData4)]
     nDpBs = [float(nDatap1), float(nDatap2), float(nDatap3), float(nDatap4)]
@@ -811,23 +863,29 @@ def Plot_Wsubjet(argv) :
     nMCpBs = [float(nMCp1), float(nMCp2), float(nMCp3), float(nMCp4)]
 
     print "TYPE 1:"
-    print "N pass post W tag Data pt 200-400 : " + str(nDBs[1])
-    print "N pass pre W tag Data pt 200-400 : " + str(nDpBs[1])
+    print "N pass post W tag Data pt 200-300 : " + str(nDBs[0])
+    print "N pass pre W tag Data pt 200-300 : " + str(nDpBs[0])
 
-    print "N pass post W tag Data pt 400-600 : " + str(nDBs[2])
-    print "N pass pre W tag Data pt 400-600 : " + str(nDpBs[2])
+    print "N pass post W tag Data pt 300-400 : " + str(nDBs[1])
+    print "N pass pre W tag Data pt 300-400 : " + str(nDpBs[1])
 
-    print "N pass post W tag Data pt 600-inf : " + str(nDBs[3])
-    print "N pass pre W tag Data pt 600-inf : " + str(nDpBs[3])
+    print "N pass post W tag Data pt 400-500 : " + str(nDBs[2])
+    print "N pass pre W tag Data pt 400-500 : " + str(nDpBs[2])
 
-    print "N pass post W tag MC pt 200-400 : " + str(nMCBs[1])
-    print "N pass pre W tag MC pt 200-400 : " + str(nMCpBs[1])
+    print "N pass post W tag Data pt 500-inf : " + str(nDBs[3])
+    print "N pass pre W tag Data pt 500-inf : " + str(nDpBs[3])
 
-    print "N pass post W tag MC pt 400-600 : " + str(nMCBs[2])
-    print "N pass pre W tag MC pt 400-600 : " + str(nMCpBs[2])
+    print "N pass post W tag MC pt 200-300 : " + str(nMCBs[0])
+    print "N pass pre W tag MC pt 200-300 : " + str(nMCpBs[0])
 
-    print "N pass post W tag MC pt 600-inf : " + str(nMCBs[3])
-    print "N pass pre W tag MC pt 600-inf : " + str(nMCpBs[3])
+    print "N pass post W tag MC pt 300-400 : " + str(nMCBs[1])
+    print "N pass pre W tag MC pt 300-400 : " + str(nMCpBs[1])
+
+    print "N pass post W tag MC pt 400-500 : " + str(nMCBs[2])
+    print "N pass pre W tag MC pt 400-500 : " + str(nMCpBs[2])
+
+    print "N pass post W tag MC pt 500-inf : " + str(nMCBs[3])
+    print "N pass pre W tag MC pt 500-inf : " + str(nMCpBs[3])
 
     for ipt, pt in enumerate(ptBs) :
         if (nDpBs[ipt] > 0 and nMCBs[ipt] > 0) :
