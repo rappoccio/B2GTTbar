@@ -895,6 +895,7 @@ def Plot_Wsubjet(argv) :
     print "N pass pre W tag MC pt 500-inf : " + str(nMCpBs[3])
 
     for ipt, pt in enumerate(ptBs) :
+        if pt > 800. : pt = 799.
         if (nDpBs[ipt] > 0 and nMCBs[ipt] > 0) :
             SF =  ( nDBs[ipt] / nDpBs[ipt] ) / ( nMCBs[ipt] / nMCpBs[ipt] )
             SF_sd = SF * math.sqrt(   (- nDBs[ipt] +nDpBs[ipt] ) / (nDBs[ipt] * nDpBs[ipt] )  + (-nMCBs[ipt]+ nMCpBs[ipt]) / (nMCBs[ipt] * nMCpBs[ipt])  )
