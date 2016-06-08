@@ -37,15 +37,15 @@ import math
 ROOT.gStyle.SetTitleOffset(1.0, "Y")
 
 
-fout= ROOT.TFile('Wmass_meanrat_Jun1.root', "RECREATE")
+fout= ROOT.TFile('Wmass_meanrat_June.root', "RECREATE")
 if options.pre :
-    fout= ROOT.TFile('Wmass_meanrat_pre_Jun1.root', "RECREATE")
+    fout= ROOT.TFile('Wmass_meanrat_pre_June.root', "RECREATE")
 
 #hmean = ROOT.TH1F("hmean", " ;p_{T} of SD subjet 0 (GeV); SF (data/MC)", 4, 0.0, 800.0)
-hpeak = ROOT.TH1F("hpeak", " ;p_{T} of SD subjet 0 (GeV); #frac{Mean Mass_{data}}{Mean Mass_{MC}}", 4, 0.0, 800.0)
-hwidth = ROOT.TH1F("hwidth", " ;p_{T} of SD subjet 0 (GeV); #frac{#sigma_{data}}{#sigma_{MC}} ", 4, 0.0, 800.0)
+hpeak = ROOT.TH1F("hpeak", " ;p_{T} of SD subjet 0 (GeV); JMS ", 4, 0.0, 800.0)  ##frac{Mean Mass_{data}}{Mean Mass_{MC}}
+hwidth = ROOT.TH1F("hwidth", " ;p_{T} of SD subjet 0 (GeV); JMR ", 4, 0.0, 800.0) ##frac{#sigma_{data}}{#sigma_{MC}}
 
-filein = ROOT.TFile.Open('Wmass_pt_binned_Jun1.root')
+filein = ROOT.TFile.Open('Wmass_pt_binned.root')
 lumi = 2136.0
 
 httbar = filein.Get("h_mWsubjet_ttjets")
@@ -115,6 +115,10 @@ hdata_b4p = filein.Get("h_mWsubjet_b4_Datap")
 
 hpts = filein.Get("h_ptWsubjet_Data_Type1")
 hpts2 = filein.Get("h_ptWsubjet_Data_Type2")
+
+hptsMC = filein.Get("h_ptWsubjet_MC_Type1")
+hpts2MC = filein.Get("h_ptWsubjet_MC_Type2")
+
 
 hscale = filein.Get("hSF")
 
@@ -326,7 +330,7 @@ for ipt, pt in enumerate(ptBs) :
     c.Draw()
     sele = options.filestr
     if options.pre :
-        sele == 'preWTag'
+        sele = 'preWTag'
     c.Print('WsubjetSF/wMass_Bin'+ str(ipt) + '_' + sele + '.png', 'png' )
 #    c.Print('WsubjetSF/wMass_Bin'+ str(ipt) + '_' + sele + '.pdf', 'pdf' )
 
@@ -337,8 +341,8 @@ if not options.pre :
     d = ROOT.TCanvas('sf','sf')
     hscale.Draw('P')
 
-    hscale.SetMaximum(1.5)
-    hscale.SetMinimum(0.7)
+    hscale.SetMaximum(2.0)
+    hscale.SetMinimum(0.0)
 
     hscale.SetMarkerStyle(20)
     #hscale.GetYaxis().SetRange(0.8,1.0)
@@ -379,8 +383,8 @@ if not options.pre :
 
     hwidth.SetMarkerStyle(20)
     #hwidth.GetYaxis().SetRange(0.8,1.0)
-    hwidth.SetMaximum(1.5)
-    hwidth.SetMinimum(0.5)
+    hwidth.SetMaximum(2.0)
+    hwidth.SetMinimum(0.0)
 
     tlx = ROOT.TLatex()
     tlx.SetNDC()
@@ -412,20 +416,28 @@ if not options.pre :
 
     ee.Update()
     ee.Draw()
-    ee.Print('WsubjetSF/Width_Wsubjet_AllBins' + '_' + options.filestr + '.png', 'png' )
+    ee.Print('WsubjetSF/JMR_Wsubjet_AllBins' + '_' + options.filestr + '.png', 'png' )
 
 
     ff = ROOT.TCanvas('P_t_Comparison','P_t_Comparison')
+    ff.SetLogy()
     hpts.Draw()
     hpts2.Draw('same')
+    hptsMC.Draw('same')
+    hpts2MC.Draw('same')
     hpts.SetLineColor(ROOT.kBlue)
     hpts2.SetLineColor(ROOT.kCyan)
-    hpts2.SetMaximum(5400.)
-    hpts2.SetMinimum(0.0)
-    hpts.SetMaximum(5400.)
-    hpts.SetMinimum(0.0)
+    hptsMC.SetLineColor(ROOT.kMagenta)
+    hpts2MC.SetLineColor(ROOT.kGreen)
+    hpts2.SetMaximum(7000.)
+    hpts2.SetMinimum(0.0001)
+    hpts.SetMaximum(7000.)
+    hpts.SetMinimum(0.0001)
+    hpts2MC.SetMaximum(7000.)
+    hpts2MC.SetMinimum(0.0001)
+    hptsMC.SetMaximum(7000.)
+    hptsMC.SetMinimum(0.0001)
     #hpts.SetMarkerStyle(20)
-    #hwidth.GetYaxis().SetRange(0.8,1.0)
     #hpts.SetMaximum(3)
     #hpts.SetMinimum(0)
 
@@ -447,12 +459,14 @@ if not options.pre :
     yInfo7 = yInfo6-0.042
     yInfo8 = yInfo7-0.042
     
-    legy = ROOT.TLegend( 0.48, 0.68, 0.599, 0.875)
+    legy = ROOT.TLegend( 0.68, 0.68, 0.799, 0.875)
     legy.SetFillColor(0)
     legy.SetBorderSize(0)
 
-    legy.AddEntry( hpts, 'Type 1', 'l')
-    legy.AddEntry( hpts2, 'Type 2', 'l')
+    legy.AddEntry( hpts, 'Data: Type 1', 'l')
+    legy.AddEntry( hpts2, 'Data: Type 2', 'l')
+    legy.AddEntry( hptsMC, 'MC: Type 1', 'l')
+    legy.AddEntry( hpts2MC, 'MC: Type 2', 'l')
     legy.Draw()
 #    tlx.DrawLatex(xInfo, yInfo4+0.4,"#bf{65 < m_{SD subjet 0} (GeV) < 130}")
 
@@ -475,8 +489,8 @@ if not options.pre :
 
     hpeak.SetMarkerStyle(20)
     #hpeak.GetYaxis().SetRange(0.8,1.0)
-    hpeak.SetMaximum(1.5)
-    hpeak.SetMinimum(0.5)
+    hpeak.SetMaximum(2.0)
+    hpeak.SetMinimum(0.0)
 
     tlx = ROOT.TLatex()
     tlx.SetNDC()
@@ -508,7 +522,7 @@ if not options.pre :
 
     gg.Update()
     gg.Draw()
-    gg.Print('WsubjetSF/MeanRat_Wsubjet_AllBins' + '_' + options.filestr + '.png', 'png' )
+    gg.Print('WsubjetSF/JMS_Wsubjet_AllBins' + '_' + options.filestr + '.png', 'png' )
 
 
 
