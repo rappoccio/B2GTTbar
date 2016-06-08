@@ -3,6 +3,10 @@ from optparse import OptionParser
 from numpy import *
 
 parser = OptionParser()
+parser.add_option('--infile', type='string', action='store',
+                  dest='infile',
+                  default = "",
+                  help='Input file')
 parser.add_option('--filestr', type='string', action='store',
                   dest='filestr',
                   default = "nom",
@@ -37,9 +41,9 @@ import math
 ROOT.gStyle.SetTitleOffset(1.0, "Y")
 
 
-fout= ROOT.TFile('Wmass_meanrat_June.root', "RECREATE")
+fout= ROOT.TFile('Wmass_meanrat' + options.infile + '.root', "RECREATE")
 if options.pre :
-    fout= ROOT.TFile('Wmass_meanrat_pre_June.root', "RECREATE")
+    fout= ROOT.TFile('Wmass_meanrat_pre' + options.infile + '.root', "RECREATE")
 
 
 ptBs =  array.array('d', [200., 300., 400., 500., 800.] )
@@ -50,7 +54,7 @@ nptBs = len(ptBs) - 1
 hpeak = ROOT.TH1F("hpeak", " ;p_{T} of SD subjet 0 (GeV); JMS ",  nptBs, ptBs)  ##frac{Mean Mass_{data}}{Mean Mass_{MC}}
 hwidth = ROOT.TH1F("hwidth", " ;p_{T} of SD subjet 0 (GeV); JMR ", nptBs, ptBs) ##frac{#sigma_{data}}{#sigma_{MC}}
 
-filein = ROOT.TFile.Open('Wmass_pt_binned.root')
+filein = ROOT.TFile.Open('Wmass_pt_binned' + options.infile + '.root')
 lumi = 2136.0
 
 httbar = filein.Get("h_mWsubjet_ttjets")
@@ -338,6 +342,7 @@ for ipt, pt in enumerate(ptBs) :
     if options.pre :
         sele = 'preWTag'
     c.Print('WsubjetSF/wMass_Bin'+ str(ipt) + '_' + sele + '.png', 'png' )
+    c.Print('WsubjetSF/wMass_Bin'+ str(ipt) + '_' + sele + '.pdf', 'pdf' )
 #    c.Print('WsubjetSF/wMass_Bin'+ str(ipt) + '_' + sele + '.pdf', 'pdf' )
 
 if not options.pre :
@@ -383,6 +388,7 @@ if not options.pre :
     d.Update()
     d.Draw()
     d.Print('WsubjetSF/ScaleFactor_Wsubjet_AllBins_' + options.filestr + '.png', 'png' )
+    d.Print('WsubjetSF/ScaleFactor_Wsubjet_AllBins_' + options.filestr + '.pdf', 'pdf' )
 
     ee = ROOT.TCanvas('wid','wid')
     hwidth.Draw('e')
@@ -423,6 +429,7 @@ if not options.pre :
     ee.Update()
     ee.Draw()
     ee.Print('WsubjetSF/JMR_Wsubjet_AllBins' + '_' + options.filestr + '.png', 'png' )
+    ee.Print('WsubjetSF/JMR_Wsubjet_AllBins' + '_' + options.filestr + '.pdf', 'pdf' )
 
 
     ff = ROOT.TCanvas('P_t_Comparison','P_t_Comparison')
@@ -488,6 +495,7 @@ if not options.pre :
     ff.Update()
     ff.Draw()
     ff.Print('WsubjetSF/Pt_type1and2_' + options.filestr + '.png', 'png' )
+    ff.Print('WsubjetSF/Pt_type1and2_' + options.filestr + '.pdf', 'pdf' )
 
 
     gg = ROOT.TCanvas('peak','peak')
@@ -529,6 +537,7 @@ if not options.pre :
     gg.Update()
     gg.Draw()
     gg.Print('WsubjetSF/JMS_Wsubjet_AllBins' + '_' + options.filestr + '.png', 'png' )
+    gg.Print('WsubjetSF/JMS_Wsubjet_AllBins' + '_' + options.filestr + '.pdf', 'pdf' )
 
 
 

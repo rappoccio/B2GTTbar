@@ -17,10 +17,15 @@ from optparse import OptionParser
 def Plot_Wsubjet(argv) : 
     parser = OptionParser()
 
-    parser.add_option('--cut', type='string', action='store',
-                      dest='cut',
-                      default = " ",
-                      help='Cut for')
+    parser.add_option('--filestr', type='string', action='store',
+                      dest='filestr',
+                      default = '',
+                      help='File string')
+        
+    parser.add_option('--tau21Cut', type='float', action='store',
+                      dest='tau21Cut',
+                      default = 0.6,
+                      help='Tau21 < tau21Cut')
         
     (options, args) = parser.parse_args(argv)
     argv = []
@@ -31,7 +36,7 @@ def Plot_Wsubjet(argv) :
 
     import ROOT
 
-    fout= ROOT.TFile('Wmass_pt_binned.root', "RECREATE")
+    fout= ROOT.TFile('Wmass_pt_binned' + options.filestr + '.root', "RECREATE")
 
 
     filesin = [ 'b2gttbar_ttrees/ttjets_ttree_76x_v1p2_puppi.root',
@@ -580,16 +585,16 @@ def Plot_Wsubjet(argv) :
             # Now we do our kinematic calculation based on the semi-leptonic Z' selection detailed in  B2G-15-002 
 
 
-            passKin = FatJetSD_pt > 400. and W_pt > 0. 
-            passKin2 =  FatJetSD_pt > 200. #and W_m < 1.
-            passWPre = W_m > 50. and W_pt > 200. 
-            passWPre2 = FatJetSD_m > 50. and FatJetSD_pt > 200. # and W_m >50.
-            passTopTag = tau32 < 0.6 and mass_sd > 110. and mass_sd < 250.
+            passKin = FatJetPt[0] > 400. and W_pt > 0. 
+            passKin2 =  FatJetPt[0] > 200. #and W_m < 1.
+            passWPre = W_m > 50. and W_pt > 0. 
+            passWPre2 = FatJetSD_m > 50. and FatJetPt[0] > 200. # and W_m >50.
+            passTopTag = tau32 < 0.8 and mass_sd > 110. and mass_sd < 250.
             pass2DCut = LeptonPtRel[0] > 20. or LeptonDRMin[0] > 0.4 # B2G-15-002 uses  LeptonPtRel[0] > 20.or LeptonDRMin[0] > 0.4 (was 55.0 here)
             passBtag = bdisc > 0.7
 
-            passWPost = (50. < W_m < 130.) and W_tau21 < 0.7 #65 to 130 before
-            passWPost2 = (50. < FatJetSD_m < 130.) and tau21 < 0.7
+            passWPost = (65. < W_m < 105.) and W_tau21 < options.tau21Cut #65 to 130 before
+            passWPost2 = (65. < FatJetSD_m < 105.) and tau21 < options.tau21Cut
             passEleMETcut =  LeptonType[0] == 1 and MET_pt > 120. and theLepton.Perp() > 55. #110.
             # B2G-15-002  uses ( theLepton.Perp() + MET_pt ) > 150. (was previously 250 here) 
             passMuHtLepcut = LeptonType[0] == 2 and ( theLepton.Perp() + MET_pt ) > 150. and theLepton.Perp() > 55.
