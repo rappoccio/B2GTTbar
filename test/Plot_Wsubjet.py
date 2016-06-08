@@ -34,9 +34,9 @@ def Plot_Wsubjet(argv) :
     fout= ROOT.TFile('Wmass_pt_binned.root', "RECREATE")
 
 
-    filesin = [ 'ttjets_ttree_76x_v1p2_puppi.root',
-                'singleel_ttree_76x_v1p2_puppi.root', 
-                'singlemu_ttree_76x_v1p2_puppi.root' ]
+    filesin = [ 'b2gttbar_ttrees/ttjets_ttree_76x_v1p2_puppi.root',
+                'b2gttbar_ttrees/singleel_ttree_76x_v1p2_puppi.root', 
+                'b2gttbar_ttrees/singlemu_ttree_76x_v1p2_puppi.root' ]
 
     filetitles =  ["ttjets_PUPPI",
                    "ElData_PUPPI",
@@ -144,7 +144,7 @@ def Plot_Wsubjet(argv) :
     h_mWjet_b3_MuData  = ROOT.TH1F("h_mWjet_b3_MuData", ";m_{SD jet0} (GeV);  ", 300, 0, 300)
     h_mWjet_b4_MuData  = ROOT.TH1F("h_mWjet_b4_MuData", ";m_{SD jet0} (GeV);  ", 300, 0, 300)
 
-    ptBs = array.array('d', [0., 200., 300., 400., 500., 800.])
+    ptBs = array.array('d', [200., 300., 400., 500., 800.])
     nptBs = len(ptBs) - 1
     hSF = ROOT.TH1F("hSF", " ;p_{T} of SD subjet 0 (GeV); SF (data/MC)", nptBs, ptBs)
 
@@ -192,11 +192,11 @@ def Plot_Wsubjet(argv) :
 #        print "This is file number : " + str(ifile)
         t =  fin.Get("TreeSemiLept") 
         if ifile == 0 : 
-            fin2 = ROOT.TFile.Open( "ttjets_ttree_76x_v1p2.root" )
+            fin2 = ROOT.TFile.Open( "b2gttbar_ttrees/ttjets_ttree_76x_v1p2.root" )
         if ifile == 1 : 
-            fin2 = ROOT.TFile.Open( "singleel_ttree_76x_v1p2.root" )
+            fin2 = ROOT.TFile.Open( "b2gttbar_ttrees/singleel_ttree_76x_v1p2.root" )
         if ifile == 2 : 
-            fin2 = ROOT.TFile.Open( "singlemu_ttree_76x_v1p2.root" )
+            fin2 = ROOT.TFile.Open( "b2gttbar_ttrees/singlemu_ttree_76x_v1p2.root" )
 
         t2 = fin2.Get("TreeSemiLept")
 
@@ -472,6 +472,7 @@ def Plot_Wsubjet(argv) :
 
 
         entries = t.GetEntriesFast()
+        #eventsToRun = 10000
         eventsToRun = entries
 #        print entries
 
@@ -894,7 +895,8 @@ def Plot_Wsubjet(argv) :
     print "N pass post W tag MC pt 500-inf : " + str(nMCBs[3])
     print "N pass pre W tag MC pt 500-inf : " + str(nMCpBs[3])
 
-    for ipt, pt in enumerate(ptBs) :
+    for ipt in xrange(0,len(ptBs) - 1) :
+        pt = float(ptBs[ipt])
         if pt > 800. : pt = 799.
         if (nDpBs[ipt] > 0 and nMCBs[ipt] > 0) :
             SF =  ( nDBs[ipt] / nDpBs[ipt] ) / ( nMCBs[ipt] / nMCpBs[ipt] )

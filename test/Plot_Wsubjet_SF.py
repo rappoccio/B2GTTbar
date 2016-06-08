@@ -41,6 +41,11 @@ fout= ROOT.TFile('Wmass_meanrat_June.root', "RECREATE")
 if options.pre :
     fout= ROOT.TFile('Wmass_meanrat_pre_June.root', "RECREATE")
 
+
+ptBs =  array.array('d', [200., 300., 400., 500., 800.] )
+nptBs = len(ptBs) - 1
+
+    
 #hmean = ROOT.TH1F("hmean", " ;p_{T} of SD subjet 0 (GeV); SF (data/MC)", 4, 0.0, 800.0)
 hpeak = ROOT.TH1F("hpeak", " ;p_{T} of SD subjet 0 (GeV); JMS ",  nptBs, ptBs)  ##frac{Mean Mass_{data}}{Mean Mass_{MC}}
 hwidth = ROOT.TH1F("hwidth", " ;p_{T} of SD subjet 0 (GeV); JMR ", nptBs, ptBs) ##frac{#sigma_{data}}{#sigma_{MC}}
@@ -139,8 +144,6 @@ maxval = options.maxval
 nbins = options.nbins
 histbins = "(" + str(nbins) + ',' + str(minval) + ',' + str(maxval) + ")"
 
-ptBs =  [0., 200., 300., 400., 500., 800.]
-nptBs = len(ptBs) - 1
 
 
 
